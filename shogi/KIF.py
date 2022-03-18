@@ -227,6 +227,7 @@ class Parser:
         last_to_square = None
         win = None
         custom_sfen = False
+        start_date = None
         kif_str = kif_str.replace('\r\n', '\n').replace('\r', '\n')
         for line in kif_str.split('\n'):
             if len(line) == 0 or line[0] == "*":
@@ -262,6 +263,8 @@ class Parser:
                     sfen = Parser.HANDYCAP_SFENS[value]
                     if sfen is None:
                         raise ParserException('Cannot support handycap type "other"')
+                elif key == '開始日時':
+                    start_date = value
             elif line == '後手番':
                 # Current turn is white
                 current_turn = shogi.WHITE
@@ -306,7 +309,8 @@ class Parser:
             'names': names,
             'sfen': sfen,
             'moves': moves,
-            'win': win
+            'win': win,
+            'start_date': start_date
         }
 
         # NOTE: for the same interface with CSA parser
